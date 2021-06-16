@@ -1,0 +1,252 @@
+<html>
+    <head>
+        <style>
+            @import url(style.css);
+            p.highlight {
+                color: red;
+            }
+            svg {
+                background-color: #160631;
+            }
+            body{
+                background-image: url('https://i.pinimg.com/originals/fa/dc/b2/fadcb24075acb650de29f258af69d830.gif');
+                background-size: cover;
+                height: 100vh;
+                padding:0;
+                margin:0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }      
+        </style>
+        <script src="./dist/pong.js"></script>
+    </head>
+    <body>
+        <svg width="900" height="500" position="absolute" id="canvas">
+            <g id="paddle1" >
+                <rect width="5" height="60" style="fill:#da48da" />
+            </g>
+            <g id="paddle2" >
+                <rect width="5" height="60" style="fill:#da48da" />
+            </g>
+            <g id="ball" >
+                <circle r="8" style="fill:white" />
+            </g>
+            <g id="line">
+                <line x1="450" y1="-50" x2="450" y2="490" style="stroke:#40cfe2;stroke-width:4;stroke-dasharray:10,10" position="absolute" />
+            </g>
+            <rect id="resultBox" width="700" height="400" style="fill:#461a8d" style="z-index: -1" x="100" y="50" style="font-family: Impact;font-size:36px;"/>
+            <text id ="resultText" x="280" y="200" font-family="Impact" font-size="100" fill="white">YOU WIN</text>
+            <text id ="retryMsg" x="300" y="338" font-family="Impact" font-size="40" fill="#ae78e3">Press Enter to Retry</text>
+        </svg>
+
+        <style>
+            .title {
+                width: 400px;
+                height: 100px;
+                position: absolute;
+                top: 8;
+                left: 40%;
+                color: #ffffff;
+            }
+            .title1 {
+                width: 400px;
+                height: 100px;
+                position: absolute;
+                top: 7;
+                left: 40.3%;
+                color: rgba(0, 255, 242, 0.5);
+            }
+            .title2 {
+                width: 400px;
+                height: 100px;
+                position: absolute;
+                top: 9;
+                left: 39.7%;
+                color: #ff00bf80;
+            }
+            /* Player 1 display box */
+            .namebox1 {
+                width: 400px;
+                height: 100px;
+                position: absolute;
+                top: 615;
+                left: 17%;
+                color: black;
+                padding-left: 20px;
+            }
+            .namebox1a {
+                width: 40px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                left: 6.5%;
+                position: absolute;
+                transform: skew(20deg);
+                background: rgba(0, 255, 242, 0.548);
+            }
+            .namebox1b {
+                width: 10px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                left: 5%;
+                position: absolute;
+                transform: skew(20deg);
+                background: rgba(0, 255, 242, 0.548);
+            }
+            .namebox1c {
+                width: 10px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                left: 37%;
+                position: absolute;
+                transform: skew(20deg);
+                background: rgba(0, 255, 242, 0.548);
+            }
+            .namebox1d {
+                width: 400px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                left: 10%;
+                position: absolute;
+                transform: skew(20deg);
+                background: rgba(0, 255, 242, 0.548);
+            }
+
+            /* Player 2 display box */
+            .namebox2 {
+                width: 400px;
+                height: 100px;
+                position: absolute;
+                top: 615;
+                right: 2%;
+                color: black;
+            }
+            .namebox2a {
+                width: 400px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                right: 10%;
+                position: absolute;
+                transform: skew(-20deg);
+                background: rgba(0, 255, 242, 0.548);
+            }
+            .namebox2b {
+                width: 40px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                right: 6.5%;
+                position: absolute;
+                transform: skew(-20deg);
+                background: #00fff28c;
+            }
+            .namebox2c {
+                width: 10px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                right: 5%;
+                position: absolute;
+                transform: skew(-20deg);
+                background: rgba(0, 255, 242, 0.548);
+            }
+            .namebox2d {
+                width: 10px;
+                height: 50px;
+                top: 650;
+                bottom: 140;
+                right: 37%;
+                position: absolute;
+                transform: skew(-20deg);
+                background: rgba(0, 255, 242, 0.548);
+            }
+            .heart1 {position:absolute;top: 75;left: 24%;color: rgb(255, 0, 76);}
+            .heart2 {position: absolute;top: 75;left: 26%;color: rgb(255, 0, 128);}
+            .heart3 {position: absolute;top: 75;left: 28%;color: rgb(255, 0, 221);}
+            .heart4 {position: absolute;top: 75;left: 30%;color: rgb(247, 0, 255);}
+            .heart5 {position: absolute;top: 75;left: 32%;color: rgb(204, 0, 255);}
+            .heart6 {position: absolute;top: 75;left: 34%;color: rgb(140, 0, 255);}
+            .heart7 {position: absolute;top: 75;left: 36%;color: rgb(0, 26, 255);}
+            .heart8 {position: absolute;top: 75;right: 24%;color: rgb(255, 0, 76);}
+            .heart9 {position: absolute;top: 75;right: 26%;color: rgb(255, 0, 128);}
+            .heart10 {position: absolute;top: 75;right: 28%;color: rgb(255, 0, 221);}
+            .heart11 {position: absolute;top: 75;right: 30%;color: rgb(247, 0, 255);}
+            .heart12 {position: absolute;top: 75;right: 32%;color: rgb(204, 0, 255);}
+            .heart13 {position: absolute;top: 75;right: 34%;color: rgb(140, 0, 255);}
+            .heart14 {position: absolute;top: 75;right: 36%;color: rgb(0, 26, 255);}
+
+            .control{
+                width: 300px;
+                height: 150px;
+                top: 300;
+                bottom: 140;
+                left: 0.5%;
+                position: absolute;
+                content: url("control.png");
+                border-style: solid;
+                border-color: black;
+            }
+
+            .layer{
+                width: 285px;
+                height: 135px;
+                top: 310;
+                bottom: 140;
+                left: 1.2%;
+                position: absolute;
+                background: rgba(43, 3, 61, 0.267);
+            }
+        </style>
+
+
+        <div class="title">
+            <p style="font-family: Impact;font-size:50px;">
+                P O N G   V A D E R</p>
+        </div>
+        <div class="title1">
+            <p style="font-family: Impact;font-size:50px;">
+                P O N G  V A D E R</p>
+        </div>
+        <div class="title2">
+            <p style="font-family: Impact;font-size:50px;">
+                P O N G  V A D E R</p>
+        </div>
+        <div class="namebox1a"></div>
+        <div class="namebox1b"></div>
+        <div class="namebox1c"></div>
+        <div class="namebox1d"></div>
+        <div class="namebox1">
+            <p style="font-family: Impact;font-size:36px;">
+                PLAYER 1</p>
+        </div>
+        <div class="namebox2a"></div>
+        <div class="namebox2b"></div>
+        <div class="namebox2c"></div>
+        <div class="namebox2d"></div>
+        <div class="namebox2">
+            <p style="font-family: Impact;font-size:36px;">
+                COMPUTER</p>
+        </div>
+        <div class="heart1"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart2"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart3"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart4"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart5"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart6"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart7"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart8"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart9"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart10"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart11"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart12"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart13"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="heart14"><p style="font-size: 24px;">&#10084;</p></div>
+        <div class="control" > </div>
+        <div class="layer"></div>
+    </body>
+</html>
